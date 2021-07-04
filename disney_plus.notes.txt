@@ -1,0 +1,474 @@
+text-decoration : none
+removes the underline from the link and 
+it will show them more like a normal texts
+
+overflow : hidden;
+
+height : 100vh;
+         100rm;
+
+what z-index does;
+what top 0;
+left 0;
+right 0;
+
+
+z-index : what it does it gives the low priority to that
+    particular thing in which we are defining it so 
+    whenever we want to add something above that like a 
+    picture or text we can do that and that will show above it not 
+    in the backgound and that won't be even hidden.
+
+display : block;
+what it does?
+
+
+ margin-right : auto; 
+ margin-left : auto;
+
+if we have a image which we want to show at the center and and wants to make it responsive in all 
+cases then we make it's values like margin-right, margin-left : auto and then it will adjust to 
+itselft according to screen sizes
+
+
+i am here using the combination of the properties are
+
+    margin-bottom 2vw:
+    max-width : 650px;
+    flax-wrap : wrap
+    display : flex;
+    
+    flex-direction : column; //because we want to show contents one by one down to each other like box on box
+                             
+    justify-content : center;
+    margin-top : 0;
+
+    align-item : center;
+    text-align : center;
+    margin-right : auto; 
+    margin-left : auto;
+    
+
+letter-spacing : 1.5px; gives space between letters or words
+line-spacing : 1.8px; manges line space between lines or we can even say a 
+lign-height
+
+
+display: inline-block;
+vertical-align: bottom;
+
+
+============================================================================================================
+
+Desiging Header :-
+==================
+
+here as we can see on site there is so much space between the logo and login
+page for that to mantain such luxary they are using flex box properte
+
+display : flex;
+space-between : 
+
+here is button we can see the tex inside the button is at the center
+so we do that by the properie of flex box call
+align-items : center;
+
+
+now designing the hover line which comes under the text whenever we move on that.
+for that we will use a sudo selector :before
+
+
+
+
+Adding firebass
+=================
+
+to add firebase go to 
+firebase>console>create project>name it and good to go.
+
+now to setup the firebase we go to project setting down there
+we will click on the tags sign and give a name to our project for hosting stuff.
+
+to install the firebase on your project do the given cmd sets like
+we have need to install firebase and firebase tool for that.
+
+npm install firebase
+npm install -g firebase-tools      
+
+now from here we have need to copy the cdn
+which contains the apiKey, authDomain, projectId, storageBucket
+messagingSenderId, appId, measurementId,
+
+and paste all the things into our firebase created component
+
+and paste the copied page and down there.
+Do this
+
+const firebaseApp = firebase.initialize(firebaseConfig); 
+by this we will be initializing the firebase in our app.
+
+the page looks something like this.
+
+import firebaee from "firebase";
+
+const firebaseConfig = {
+    apiKey: "AIzaSyCztqDibbyO-GyLZmdIUkUlXFvLGKJc8z8",
+    authDomain: "disney-plus-a8d25.firebaseapp.com",
+    projectId: "disney-plus-a8d25",
+    storageBucket: "disney-plus-a8d25.appspot.com",
+    messagingSenderId: "910155362717",
+    appId: "1:910155362717:web:d3465dacab0ec0fb137f74",
+    measurementId: "G-RGLX80MRWG"
+  };
+  
+//here we are initalizing the firebase in our App
+  const firebaseApp = firebase.initialize(firebaseConfig); 
+
+//
+  const db = firebasApp.firestore();
+
+//now for authentication
+  const auth = firebase.auth();
+
+//this is for social google authntication in which if we try to login any site and there
+  is google authenction available then once we click it will ask from which email we want
+  to login on the device from excisting email id's
+  
+  const provider = new firebase.auth.GoogleAuthProvider();
+
+
+  // here we are going to store the images and all the things
+   const storage = firebase.storage();
+
+export { auth, provider, storage};
+export default db;
+
+
+
+To add authenticatiion go to the hosting over down there we will be able to find an option of 
+authentication click on that and click get started and then here enable the things from you want
+to do authentication here in our case we are doing that through google only so just enable that.
+
+and now we we are going to add that,in our app
+
+now go to the page where you want to add the authentication in my case i am doing it in our header
+of our disney clone so  we are in header component now inside the header component on the top
+we will use a function to add that. 
+
+const handleAuth = ( ) => {
+ auth.signInWithPopup(provider); here inside our singinwithpop we will pass provider component
+ //signInWithPopup allows us to once we click on googl logo it will popup all google account on device and provide to
+   user and that is why here we are passing provider function inside that.
+}
+
+
+
+ const handleAuth = () => {
+     auth.signInWithPopup(provider).then((result) => {
+                 //here then weill handle the result which is an API
+
+     console.log(result)
+     }).catch((error) => {      //Catch will check the errors and it will inform as in the inform of the alert
+    alert(error.message);
+     });
+  }
+
+now we have to apple our handleAuth handler as a event handler in button which is going to give login acces
+
+----------------------------------------------------------------------------------------------------------------
+
+Now once we sign it there will be some data and we want to get it handle by the user-end itself so for the same
+we will use the react-redux in order to handle it over there and optimized perforance so there should be no any
+delay.
+
+and also here we will be using react redux toolkit which is modern and easist way to use react.
+
+installation
+
+npm install react-redux
+npm install @reduxjs/toolkit
+
+why we are using redux : because of we can store information somewhere and retive it lether here what redux does
+that it store information in userend and doesn't require a DB so that's why we are using so we can retive the
+stored information lether
+
+now once we did that we need to define our store
+and here at src we are creating an app folder and over there we are going to create our store.js file.
+
+
+here now we will create a store by the help of configureStore function and we will give defaultMiddleware to it.
+ 
+
+import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
+import userReducer  from "../../src/features/user/userSlice";
+
+export default configureStore({
+
+    reducer : {                        //it is final reducer which can contain so many reducer
+                user :  userReducer,       
+              },
+
+    middleware : getDefaultMiddleware({
+    serializableCheck : false,
+
+    }),
+});
+
+
+
+import { createSlice } from "@reduxjs/toolkit";
+
+const initialState = { 
+ name  : " " ,
+ email : " " ,
+ photo : " " ,
+};
+
+const userSlice = createSlice({
+
+    name : "user",
+    initialState,
+    reducers : {
+                setUserLoginDetails : (state, action) =>
+                 {
+                     state.name = action.payload.name;
+                     state.email = action.payload.email;
+                     state.photo = action.payload.photo;
+                 }, 
+               
+                  setSignOutState : (state) =>
+                   {
+                       state.name  = null;
+                       state.email = null;
+                       state.photo = null;
+                   }
+               }, 
+});
+
+export const { setUserLoginDetails, setSignOutState} = userSlice.action;
+export const selectUserName = (state) => state.user.name;
+export const selectUserEmail = (state) => state.user.email;
+export const selectUserPhoto = (state) => state.user.photo;
+
+export default userSlice;
+===============================================================================================================
+
+
+designing home page of our website
+----------------------------------
+
+here we are going to use slick-carousel
+for adding carousel slider in our home page of our application
+before that we have already set-up our background images and set-up rest of things
+there is one more thing we are not doing do that much hard code so we are going to download the package of it
+and we will make it ready to thing
+
+Slick is a fresh new jQuery plugin for creating fully customizable, responsive and mobile friendly 
+carousels/sliders that work with any html elements. 
+
+for React-slick
+
+$npm slick-carousel
+ 
+once slick-carousel installed we will import some really important files of it in our sliderpage.
+where we want to create our slider.
+
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import Slider from "react-slick";
+
+import styled from "styled-component";
+
+
+
+const ImgSlider = (props) => {
+         this are the properties which we are implementing from the slick offical website
+let settings = {     
+  dots: true, 
+    infinite: true,     it says fliping should be infinite
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: true,
+  };
+
+  return (
+    <Carousel {...settings}> here implementing the same details
+      <Wrap>
+        <a>
+          <img src="/images/slider-badging.jpg" alt="" />
+        </a>
+      </Wrap>
+
+      <Wrap>
+        <a>
+          <img src="/images/slider-scale.jpg" alt="" />
+        </a>
+      </Wrap>
+
+      <Wrap>
+        <a>
+          <img src="/images/slider-badag.jpg" alt="" />
+        </a>
+      </Wrap>
+
+      <Wrap>
+        <a>
+          <img src="/images/slider-scales.jpg" alt="" />
+        </a>
+      </Wrap>
+    </Carousel>
+  );
+};
+
+const wrap = styled(Slider)`
+      a{
+
+         img{
+
+            }
+        }
+`;
+
+export default ImgSlider;
+---------------------------------------------------------------------------------------------------------------
+
+Recommoneded page :
+===================
+here we will be using normal technique
+
+import React from "react";
+import styled from "styled-component";
+import { Link }from "react-router-dom";  //this one enable us to go to the page section without refeshing our page
+
+<>
+  <Container>
+        <Section>
+            <h3>1</h3>
+            <h3>2</h3>
+            <h3>3</h3>
+            <h3>4</h3>
+            <h4>5</h4>
+        </Section>
+  </Container>
+
+</>
+
+const Container = styled.div`
+  padding : 0 0 26px;
+`;
+
+const Section = styled.div`
+display : grid;
+grid-gap : 25px;
+grid-template-columns : repeat(4, minmax(0, 1fr));  //it will show them in row format
+
+@media(max-width :768px) {
+    grid-template-columns : rorepeat(2, minmax(0, 1fr)); //it is for bigger devices.
+}
+
+const Wrap = styled.div`
+  padding-top: 56.25%;
+  border-radius: 10px;
+  box-shadow: rgb(0 0 0 / 69%) 0px 26px 30px -10px,
+    rgb(0 0 0 / 73%) 0px 16px 10px -10px;
+  cursor: pointer;
+  overflow: hidden;
+  position: relative;
+  transition: all 250ms cubic-bezier(0.25, 0.46, 0.45, 0.94) 0s;
+  border: 3px solid rgba(249, 249, 249, 0.1);
+
+
+  img {
+    inset: 0px;                                //inset ?
+    display: block;                            //dispaly : block?
+    height: 100%; 
+    object-fit: cover;                         //object-fit : cover?
+
+    opacity: 1;                    //opacity shows things faded.    bydefault : 1px;
+                                   the quality of being difficult to see through; the fact of being opaque
+
+
+    position: absolute;
+    transition: opacity 500ms ease-in-out 0s;
+    width: 100%;
+    z-index: 1;
+    top: 0;
+  }
+`;
+
+
+
+now we are going to store the movies in our realtime firebase database with the help of reduxjs/toolkit or
+we can also say that redux all in all.
+
+so for that first we need to go to the the 
+
+firebase.google.com
+here select our project in which we want to add that then select realte and create that.
+
+and then chose the database location 
+after that chose the mode in which you want to store the information here we are using text mode as 
+Qazi is also using the same.
+
+---------------------------------------------------------------------------------------------------------------
+
+Details page  :-
+=================
+
+
+
+
+
+
+
+
+
+----------------------------------------------------------------------------------------------------------------
+Deploying our project on firebase Hosting : 
+===========================================
+go to firebase Hosting >
+
+Click on Hosting > Get Started >
+then install 
+
+npm install -g firebase-tools  -> if you have already done this don't do it
+
+        now for deployment use this cmd
+        make sure firebase tools should be installed if you didn't you can do that by simple cmd
+
+npm install -g firebase-tools ->  if we get any error use
+sudo npm install -g firebase-tools
+
+   also check firebase login by cmd like this by cmd
+
+firebase login  -> if you will be logged in it will give you your mail id there.
+
+    now we need to build our app to host on site so for that
+    and it will create a new folder called build for you in our local system
+
+npm run build  
+ 
+firebase init
+   and select what you want here we are doing hosting so select hosting.
+   and then it will ask you to if you want to continue with the existing project if you have created
+   there any select that and then inside select the project name
+   once we are done with that.
+  
+    it will ask us to what we want to use as public directry we have to select or type 
+ build
+    which folder recently created after npm build
+
+    then it will ask it is single page application in which you have to select yes
+    then try this cmd to deploy and you are done with it.
+    
+    also if you want the github option it will ask select accordingly
+    for override even you can select yes or not for that.
+    and use firbase hosting then     
+
+firebase hosting
+      after this it will get deployed and it will give you link and 
+      by using that link you can see your hosted website.
+
+
+disneyplus-clone-a33d5.web.app
